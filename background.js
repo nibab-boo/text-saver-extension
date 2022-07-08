@@ -13,25 +13,38 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 
-// Calls POPOUT.js with text
-const callPopout = (message) => {
-    // chrome.tabs.sendMessage(tabs[0].id, )
-    console.log("message:", message);
+// Send Text To POPOUT.js
+const sendText = (message) => {
+    // storing in storage
+    chrome.storage.sync.get(['list'], (result) => {
+        let list = [];
+        if (result.list) {
+            list = JSON.parse(result.list);
+        }
+        chrome.storage.sync.set({list: JSON.stringify([...list, message])});
+    });
     chrome.runtime.sendMessage({ action: "display_text", message: message })
 }
 
+const sendList = () => {
+    chrome.storage.sync.get(["list"], (result) => {
+        let list = [];
+        if (result.list) {
+            list = JSON.parse(result.list);
+        }
+        chrome.runtime.sendMessage({ action: "display_list", list: list });
+    });
+}
+
+
 // listening to command
 chrome.commands.onCommand.addListener((command) => {
-    //TODO handle event
-
     // Finds tabs that are active in the current window
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         if (command === "copy") {
-
             // message to FOREGROUND.js
-            // Sends a message (object) to the first tab (tabs[0])
             chrome.tabs.sendMessage(tabs[0].id, { action: "get_text" });
-        };
+        }
     });
 });
 
@@ -39,6 +52,8 @@ chrome.commands.onCommand.addListener((command) => {
 // listening to message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "receive_test") {
-        callPopout(request.message);
+        sendText(request.message);
+    } else if (request.action === "fetch_text") {
+        sendList();
     }
 });

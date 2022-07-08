@@ -17,6 +17,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 const callPopout = (message) => {
     // chrome.tabs.sendMessage(tabs[0].id, )
     console.log("message:", message);
+    chrome.runtime.sendMessage({ action: "display_text", message: message })
 }
 
 // listening to command

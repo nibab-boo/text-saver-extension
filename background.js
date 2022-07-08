@@ -12,15 +12,32 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
+
+// Calls POPOUT.js with text
+const callPopout = (message) => {
+    // chrome.tabs.sendMessage(tabs[0].id, )
+    console.log("message:", message);
+}
+
 // listening to command
 chrome.commands.onCommand.addListener((command) => {
     //TODO handle event
-    console.log("Inside Command!");
-    // getting current TabId
+
+    // Finds tabs that are active in the current window
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         if (command === "copy") {
-            // Finds tabs that are active in the current window
-            chrome.tabs.sendMessage(tabs[0].id, { action: "get_text" }); // Sends a message (object) to the first tab (tabs[0])
+
+            // message to FOREGROUND.js
+            // Sends a message (object) to the first tab (tabs[0])
+            chrome.tabs.sendMessage(tabs[0].id, { action: "get_text" });
         };
     });
+});
+
+
+// listening to message
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "receive_test") {
+        callPopout(request.message);
+    }
 });

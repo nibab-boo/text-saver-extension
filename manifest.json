@@ -1,0 +1,28 @@
+{
+  "name": "Time Saver",
+  "description": "Chrome extension for saving text simply and easily.",
+  "author": "nibab-boo",
+  "version": "0.1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "commands": {
+      "copy": {
+         "suggested_key": "Ctrl+Shift+E",
+         "description": "Copy highlighted"
+      }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "http://*/*", "https://*/*"
+  ]
+}

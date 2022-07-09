@@ -37,7 +37,7 @@ const sendList = () => {
 }
 
 
-// listening to command
+// LISTENING FOR COMMANDS
 chrome.commands.onCommand.addListener((command) => {
     // Finds tabs that are active in the current window
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -49,11 +49,13 @@ chrome.commands.onCommand.addListener((command) => {
 });
 
 
-// listening to message
+// LISTENING FOR MESSAGES
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "receive_test") {
         sendText(request.message);
-    } else if (request.action === "fetch_text") {
+    } else if (request.action === "fetch_list") {
         sendList();
+    } else if (request.action === "clear_data") {
+        chrome.storage.sync.set({list: "[]"});
     }
 });

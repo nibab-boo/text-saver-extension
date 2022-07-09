@@ -1,11 +1,14 @@
 // LIST FETCHER
-( () => {
+const fetchList = () => {
     // send message
-    chrome.runtime.sendMessage({ action: "fetch_text" });
-  }
-)();
+    chrome.runtime.sendMessage({ action: "fetch_list" });
+}
 
+document.addEventListener("DOMContentLoaded", () => {
+  fetchList();
+});
 
+// ADDING LINE TO EXTENSION
 const addLine = (message) => {
   const list = document.getElementById("popup-list")
   const listItem = document.createElement("li");
@@ -13,7 +16,7 @@ const addLine = (message) => {
   list.appendChild(listItem);
 };
 
-// Listening to MESSAGE
+// Listening FOR MESSAGE
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const {action, message, list} = request;
   if (action === "display_text" && message) {
@@ -24,3 +27,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // BUTTON TO CLEAR STORAGE
+const clearButton = document.getElementById("clear-data");
+clearButton.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "clear_data" })
+  fetchList();
+})

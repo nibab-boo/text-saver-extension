@@ -16,11 +16,24 @@
          "description": "Copy highlighted"
       }
   },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["scripts/foreground.js"]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "images/clipper.png"
+  },
+  "icons": {
+    "16": "images/clipper.png",
+    "32": "images/clipper.png",
+    "48": "images/clipper.png",
+    "128": "images/clipper.png"
   },
   "host_permissions": [
     "http://*/*", "https://*/*"

@@ -57,5 +57,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendList();
     } else if (request.action === "clear_data") {
         chrome.storage.sync.set({list: "[]"});
+        sendResponse({ code: "success" })
     }
 });

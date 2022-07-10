@@ -12,7 +12,7 @@
   ],
   "commands": {
       "copy": {
-         "suggested_key": "Ctrl+Shift+E",
+         "suggested_key": "Ctrl+Q",
          "description": "Copy highlighted"
       }
   },

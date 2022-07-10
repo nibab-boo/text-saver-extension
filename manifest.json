@@ -1,6 +1,6 @@
 {
   "name": "clipper",
-  "description": "Chrome extension for saving text simply and easily.",
+  "description": "Let's user take multiple note from different website and copy them as a whole text.",
   "author": "nibab-boo",
   "version": "0.1.0",
   "manifest_version": 3,

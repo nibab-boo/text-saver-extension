@@ -2,7 +2,7 @@
   "name": "clipper",
   "description": "Let's user take multiple note from different website and copy them as a whole text.",
   "author": "nibab-boo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "manifest_version": 3,
   "permissions": [
     "activeTab",

@@ -39,17 +39,28 @@ const sendList = () => {
 
 // Change Focus
 const changeFocus = (movement) => {
-    if (movement === "up") {
-        chrome.storage.sync.get(["list", "position"], (result) => {
-            const list = result.list ? JSON.parse(result.list) : null;
-            if (list && list.length > 0) {
-                const position = (result.position != null) ? JSON.parse(result.position) + 1 : 0;
-                console.log("position", position)
-                console.log("item", list[position]);
-                chrome.storage.sync.set({position: JSON.stringify(position)});
+    if (!movement) return;
+    
+    chrome.storage.sync.get(["list", "position"], (result) => {
+        const list = result.list ? JSON.parse(result.list) : null;
+        // checking if list exists or not
+        if (list && list.length > 0) {
+            // Taking previous position
+            const prePosition = result.position ? JSON.parse(result.position) : list.length;
+            let position;
+            // changing value according to value
+            if (movement === "down") {
+                position = prePosition + 1;
+            } else {
+                position = prePosition - 1;
             }
-        });
-    }
+            // Safety check for overflowing POSITION
+            if (position >= list.length) position = 0;
+            if (position < 0) position = list.length - 1
+            console.log("item", list[position]);
+            chrome.storage.sync.set({position: JSON.stringify(position)});
+        }
+    });
 }
 
 

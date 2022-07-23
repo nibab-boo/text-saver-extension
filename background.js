@@ -15,23 +15,57 @@ const sendText = (message) => {
     // storing in storage
     chrome.storage.sync.get(['list'], (result) => {
         let list = [];
+
         if (result.list) {
             list = JSON.parse(result.list);
         }
+        
         chrome.storage.sync.set({list: JSON.stringify([...list, message])});
     });
     chrome.runtime.sendMessage({ action: "display_text", message: message })
 }
 
 const sendList = () => {
-    chrome.storage.sync.get(["list"], (result) => {
+    chrome.storage.sync.get(["list", "position"], (result) => {
         let list = [];
+        let position = result.position || 0;
+        
         if (result.list) {
             list = JSON.parse(result.list);
         }
-        chrome.runtime.sendMessage({ action: "display_list", list: list });
+        chrome.runtime.sendMessage({ action: "display_list", list: list, position: JSON.parse(position) });
     });
 }
+
+// Change Focus
+const changeFocus = (movement) => {
+    if (movement === "up") {
+        chrome.storage.sync.get(["list", "position"], (result) => {
+            const list = result.list ? JSON.parse(result.list) : null;
+            if (list && list.length > 0) {
+                const position = (result.position != null) ? JSON.parse(result.position) + 1 : 0;
+                console.log("position", position)
+                console.log("item", list[position]);
+                chrome.storage.sync.set({position: JSON.stringify(position)});
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // LISTENING FOR COMMANDS
@@ -42,6 +76,15 @@ chrome.commands.onCommand.addListener((command) => {
             // message to FOREGROUND.js
             chrome.tabs.sendMessage(tabs[0].id, { action: "get_text" });
         }
+        else if (command === "index1") {
+            console.log("command: ", command);
+            changeFocus("up")
+        }
+        else if (command === "index2") {
+            console.log("command: ", command);
+            changeFocus("down")
+        }
+
     });
 });
 

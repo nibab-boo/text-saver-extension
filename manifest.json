@@ -12,6 +12,14 @@
       "copy": {
          "suggested_key": "Ctrl+Q",
          "description": "Copy highlighted"
+      },
+      "index1": {
+        "suggested_key": "Ctrl + Shift + 1",
+        "description": "paste for 1"
+      },
+      "index2": {
+        "suggested_key": "Ctrl + Shift + 2",
+        "description": "paste for 2"
       }
   },
   "content_scripts": [

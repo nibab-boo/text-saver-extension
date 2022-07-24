@@ -7,13 +7,14 @@
 //     } else {
 //         chrome.action.setPopup({ popup: "" })
 //     }
+
 // });
 
 
 // Send Text To POPOUT.js
 const sendText = (message) => {
     // storing in storage
-    chrome.storage.sync.get(['list'], (result) => {
+    chrome.storage.sync.get(["list"], (result) => {
         let list = [];
 
         if (result.list) {
@@ -60,12 +61,12 @@ const changeFocus = (movement) => {
             if (position < 0) position = list.length - 1
 
             const text = list[position];
-            console.log("item", list[position]);
+            // console.log("item", list[position]);
             await chrome.storage.sync.set({position: JSON.stringify(position)});
-            await chrome.runtime.sendMessage({ action: "highlight_item", position: position, text: text });
             chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-              chrome.tabs.sendMessage(tabs[0].id, { action: "copy_text", text: text })
+              if (tabs[0]?.id) chrome.tabs.sendMessage(tabs[0].id, { action: "copy_text", text: text })
             });
+            await chrome.runtime.sendMessage({ action: "highlight_item", position: position, text: text });
         }
     });
 }

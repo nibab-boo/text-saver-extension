@@ -29,12 +29,12 @@ const sendText = (message) => {
 const sendList = () => {
     chrome.storage.sync.get(["list", "position"], (result) => {
         let list = [];
-        let position = result.position || 0;
+        const position = result.position != null ? JSON.parse(result.position) : null;
         
         if (result.list) {
             list = JSON.parse(result.list);
         }
-        chrome.runtime.sendMessage({ action: "display_list", list: list, position: JSON.parse(position) });
+        chrome.runtime.sendMessage({ action: "display_list", list: list, position: position });
     });
 }
 

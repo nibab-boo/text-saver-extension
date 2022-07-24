@@ -32,6 +32,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     addLine(message);
   } else if (action === "display_list" && list) {
     list.forEach(text => addLine(text));
+    highlightItem(request.position);
   } else if (action === "highlight_item") {
     const { position, text } = request;
     highlightItem(position);

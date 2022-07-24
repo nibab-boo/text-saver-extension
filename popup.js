@@ -1,7 +1,7 @@
 // LIST FETCHER
 const fetchList = () => {
-    // send message
-    chrome.runtime.sendMessage({ action: "fetch_list" });
+  // send message
+  chrome.runtime.sendMessage({ action: "fetch_list" });
 }
 const list = document.getElementById("popup-list");
 
@@ -16,6 +16,15 @@ const addLine = (message) => {
   list.appendChild(listItem);
 };
 
+// HIGHLIGHT the list items
+const highlightItem = (position) => {
+  const highlighted = document.querySelector(".highlighted");
+  const listItems = document.querySelectorAll("li");
+
+  if (highlighted) highlighted.classList.remove("highlighted");
+  if (position != null) listItems[position].classList.add("highlighted");
+};
+
 // Listening FOR MESSAGE
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const {action, message, list} = request;
@@ -23,6 +32,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     addLine(message);
   } else if (action === "display_list" && list) {
     list.forEach(text => addLine(text));
+  } else if (action === "highlight_item") {
+    const { position, text } = request;
+    highlightItem(position);
   }
 });
 

@@ -29,3 +29,7 @@
 #clear-data:hover {
   background: rgb(222, 184, 135);
 }
+
+.highlighted {
+  background-color: antiquewhite;
+}

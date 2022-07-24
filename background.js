@@ -41,7 +41,7 @@ const sendList = () => {
 const changeFocus = (movement) => {
     if (!movement) return;
     
-    chrome.storage.sync.get(["list", "position"], (result) => {
+    chrome.storage.sync.get(["list", "position"], async (result) => {
         const list = result.list ? JSON.parse(result.list) : null;
         // checking if list exists or not
         if (list && list.length > 0) {
@@ -54,17 +54,24 @@ const changeFocus = (movement) => {
             } else {
                 position = prePosition - 1;
             }
+
             // Safety check for overflowing POSITION
             if (position >= list.length) position = 0;
             if (position < 0) position = list.length - 1
+
+            const text = list[position];
             console.log("item", list[position]);
-            chrome.storage.sync.set({position: JSON.stringify(position)});
+            await chrome.storage.sync.set({position: JSON.stringify(position)});
+            await chrome.runtime.sendMessage({ action: "highlight_item", position: position, text: text });
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+              chrome.tabs.sendMessage(tabs[0].id, { action: "copy_text", text: text })
+            });
         }
     });
 }
 
 
-
+    
 
 
 

@@ -23,5 +23,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
           // Sends a message (object) to the first tab (tabs[0])
           chrome.runtime.sendMessage({ action: "receive_test", message: textFinder() });
     // });
-  };
+  } else if (request.action === "copy_text") {
+      navigator.clipboard.writeText(request.text);
+  }
 });

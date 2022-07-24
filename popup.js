@@ -36,6 +36,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (action === "highlight_item") {
     const { position, text } = request;
     highlightItem(position);
+  } else if (action === "try_copy") {
+    navigator.clipboard.writeText(request.text);
   }
 });
 

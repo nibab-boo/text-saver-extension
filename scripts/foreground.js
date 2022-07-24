@@ -24,6 +24,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
           chrome.runtime.sendMessage({ action: "receive_test", message: textFinder() });
     // });
   } else if (request.action === "copy_text") {
-      navigator.clipboard.writeText(request.text);
+      navigator.clipboard.writeText(request.text).then(()=> {
+        console.log("successful");
+      }, () => {
+        chrome.runtime.sendMessage({ action: "try_copy", text: request.text })
+      })
   }
 });

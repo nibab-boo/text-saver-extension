@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
   </head>
-  <body id="popup-body">
-    <div id="popup-nav">
-      <button id="clear-data">clear data</button>
-      <span id="popup-copy">
-        <img src="images/content_copy_black_24dp.svg"/>
-      </span>
+  <body>
+    <div id="popup-body">
+      <div id="popup-nav">
+        <button id="clear-data" class="btn">clear data</button>
+        <button id="new-note" class="btn hidden">New Note</button>
+        <a href="http://localhost:3000" target="_blank" id="login" class="btn">Login</a>
+        <span id="popup-copy">
+          <img src="images/content_copy_black_24dp.svg"/>
+        </span>
+      </div>
+      <hr>
+      <ol id="popup-list">
+        
+      </ol>
+      <p class="user-text"></p>
     </div>
-    <hr>
-    <ol id="popup-list">
-      
-    </ol>
-    <p class="user-text"></p>
+    <!-- <div id="login-body">
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input type="email" name="email" />
+        <label for="password">Password</label>
+        <input type ="password" name="password" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div> -->
+    <div id="note-body" class="hidden">
+      <button id="back" class="btn">Back</button>
+      <h2>Note Body</h2>
+    </div>
   </body>
   <script type="text/javascript" src="popup.js"></script>
 </html>

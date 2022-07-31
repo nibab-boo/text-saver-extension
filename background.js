@@ -72,6 +72,38 @@ const changeFocus = (movement) => {
 }
 
 
+// CREATE NOTE
+const createNote = (title) => {
+    fetch("http://localhost:3000/api/v1/notes", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            // 'X-User-Email': "bohorababin1@gmail.com",
+            // 'X-User-Token': "YZV2E7Abzi2inqN7Eytc"
+        },
+        body: JSON.stringify({ "note": { "title": title }})
+    })
+    .then(response => {
+        switch (response.status) {
+            case 200:
+                const data = await response.json()
+                chrome.storage.sync.set({ note_id: data.note.id, note_title: data.note.title });
+                chrome.runtime.sendMessage({ action: "create-success", message: data.note.title });
+                break;
+
+            default:
+                console.log("REQUEST CODE:", request.status);
+                break;
+        }
+        // if (response.status != 200) {
+        //     console.log("CREATE FAILED");
+        //     response.json().then(data => console.log(data));
+        //     return;
+        // }
+
+
+    });
+}
     
 
 
@@ -103,10 +135,8 @@ chrome.commands.onCommand.addListener((command) => {
             console.log("command: ", command);
             changeFocus("down")
         }
-
     });
 });
-
 
 // LISTENING FOR MESSAGES
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -117,5 +147,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.action === "clear_data") {
         chrome.storage.sync.set({list: "[]"});
         sendResponse({ code: "success" })
+    } else if (request.action === "new_note") {
+        createNote(request.title)
     }
 });

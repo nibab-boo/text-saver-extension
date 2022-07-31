@@ -30,6 +30,7 @@ const loginCheck = () => {
       console.log("Failed Login");
       return;
     }
+
     newNoteBtn.classList.remove("hidden")
     login.classList.add("hidden")
     res.json().then(data => console.log(data));
@@ -87,7 +88,8 @@ newNoteBtn.addEventListener("click", () => {
 document.querySelector("#note-form").onsubmit = (e) => {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
-  console.log("NOTE FORM: ", ...formData);
+  console.log("NOTE FORM: ", formData);
+  chrome.runtime.sendMessage({ action: "new_note", title: formData.get("title") });
 };
 
 // BACK TO POPUP

@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap');
 
-#popup-body {
+body {
   font-family: 'PT Sans Narrow', sans-serif;
   height: 200px;
   width: 200px;
+}
+
+.login {
+  text-decoration: none;
 }
 
 #popup-nav {
@@ -15,15 +19,22 @@
   cursor: pointer;
 }
 
-#clear-data {
+.hidden {
+  display: none;
+}
+
+.btn {
   padding: 4px 8px;
   border: 0;
-  background: rgb(199 154 96);
   font-size: x-small;
   font-weight: bold;
   border-radius: 10px;
-  color: ghostwhite;
   box-shadow: 0 0 2px #0000008c, 2px 2px 4px #00000042, 4px 4px 6px #0000004d;
+}
+
+#clear-data {
+  background: rgb(199 154 96);
+  color: ghostwhite;
 }
 
 #clear-data:hover {

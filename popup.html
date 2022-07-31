@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="popup-body">
+    <div id="popup-body" class="hidden">
       <div id="popup-nav">
         <button id="clear-data" class="btn">clear data</button>
         <button id="new-note" class="btn hidden">New Note</button>
@@ -29,9 +29,17 @@
         <input type="submit" value="Submit" />
       </form>
     </div> -->
-    <div id="note-body" class="hidden">
+    <div id="note-body">
       <button id="back" class="btn">Back</button>
-      <h2>Note Body</h2>
+      <hr />
+      <div>
+        <h2>New Note</h2>
+        <form id="note-form">
+          <label for="title" style="display:block">title</label>
+          <input type="text" name="title" />
+          <input type="submit" class="btn" value="Submit" />
+        </form>
+      </div>
     </div>
   </body>
   <script type="text/javascript" src="popup.js"></script>

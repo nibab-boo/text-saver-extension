@@ -126,5 +126,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (action === "create_success") {
     console.log("success");
     createSuccess(request.title);
+  } else if (action === "login_failed") {
+    window.open("http://localhost:3000/users/sign_in", "_blank").focus();
   }
 });

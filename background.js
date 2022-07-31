@@ -90,6 +90,8 @@ const createNote = (title) => {
                 chrome.storage.sync.set({ note_id: data.note.id, note_title: data.note.title });
                 chrome.runtime.sendMessage({ action: "create_success", title: data.note.title });
             });
+        } else if (response.status === 401) {
+            chrome.runtime.sendMessage({ action: "login_failed" });
         }
         // if (response.status != 200) {
         //     console.log("CREATE FAILED");

@@ -92,14 +92,9 @@ const createNote = (title) => {
             });
         } else if (response.status === 401) {
             chrome.runtime.sendMessage({ action: "login_failed" });
+        } else {
+            chrome.runtime.sendMessage({ action: "create_failed", message: data.message });
         }
-        // if (response.status != 200) {
-        //     console.log("CREATE FAILED");
-        //     response.json().then(data => console.log(data));
-        //     return;
-        // }
-
-
     });
 }
     
@@ -147,5 +142,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ code: "success" })
     } else if (request.action === "new_note") {
         createNote(request.title)
+    } else if (request.action === "not_logged_in") {
+        chrome.storage.sync.set({note_title: "", note_id: ""});
     }
 });

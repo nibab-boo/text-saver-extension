@@ -27,6 +27,7 @@ const loginCheck = () => {
     }
   }).then(res => {
     if (res.status != 200) {
+      chrome.runtime.sendMessage({ action: "not_logged_in" })
       console.log("Failed Login");
       return;
     }
@@ -128,5 +129,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     createSuccess(request.title);
   } else if (action === "login_failed") {
     window.open("http://localhost:3000/users/sign_in", "_blank").focus();
+  } else if (action === "create_failed") {
+    console.log("MESSAGE: ", request.message);
+    document.querySelector("#error-message").textContent = request.message;
   }
 });

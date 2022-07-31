@@ -6,7 +6,7 @@ body {
   width: 200px;
 }
 
-.login {
+#login {
   text-decoration: none;
 }
 
@@ -43,4 +43,21 @@ body {
 
 .highlighted {
   background-color: antiquewhite;
+}
+
+/* login-form */
+#note-body > div {
+  width: 80vw;
+  margin: 0 auto;
+}
+
+#note-body #error-message {
+  display: inline-block;
+}
+
+#note-form [type="submit"] {
+  border-radius: 4px;
+  margin-top: 2em;
+  background-color: #4e48ac75;
+  color: #34383b;
 }

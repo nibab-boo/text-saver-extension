@@ -1,14 +1,20 @@
 const list = document.getElementById("popup-list");
-const newNoteBtn = document.getElementById("new-note");
-const loginBtn = document.getElementById("login");
+
 const popupBody = document.getElementById("popup-body");
 const noteBody = document.getElementById("note-body");
+
+const newNoteBtn = document.getElementById("new-note");
+const loginBtn = document.getElementById("login");
+const copyButton = document.getElementById("popup-copy");
+const clearButton = document.getElementById("clear-data");
+
 
 // LIST FETCHER
 const fetchList = () => {
   // send message
   chrome.runtime.sendMessage({ action: "fetch_list" });
 }
+
 
 // LOGIN CHECK
 const loginCheck = () => {
@@ -32,22 +38,6 @@ const loginCheck = () => {
   });
 }
 
-// ONDOMCONTENTLOADED
-document.addEventListener("DOMContentLoaded", () => {
-  fetchList();
-  loginCheck();
-});
-
-newNoteBtn.addEventListener("click", () => {
-  popupBody.classList.add("hidden");
-  noteBody.classList.remove("hidden");
-});
-
-// document.querySelector("#login-form").onsubmit = (e) => {
-//   e.preventDefault();
-//   const formData = new FormData(e.currentTarget);
-  
-// };
 
 // ADDING LINE TO EXTENSION
 const addLine = (message) => {
@@ -65,6 +55,55 @@ const highlightItem = (position) => {
   if (position != null) listItems[position].classList.add("highlighted");
 };
 
+
+
+// EVENT-LISTENERS
+
+// CLEAR STORAGE
+clearButton.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "clear_data" }, (response) => {
+    if (response.code === "success") {
+      list.innerHTML = "";
+    }
+  });
+});
+
+// COPY TEXT TO CLIPBOARD
+copyButton.addEventListener("click", () => {
+  // console.log("innerText: ",)
+  if (list.innerText) {
+    navigator.clipboard.writeText(list.innerText);
+  }
+});
+
+// GOTO NOTE-FORM
+newNoteBtn.addEventListener("click", () => {
+  popupBody.classList.add("hidden");
+  noteBody.classList.remove("hidden");
+});
+
+
+// NOTE-FORM ONSUBMIT
+document.querySelector("#note-form").onsubmit = (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+  console.log("NOTE FORM: ", ...formData);
+};
+
+// BACK TO POPUP
+document.getElementById("back").addEventListener("click", () => {
+  popupBody.classList.remove("hidden");
+  noteBody.classList.add("hidden");
+});
+
+// ONDOMCONTENTLOADED
+document.addEventListener("DOMContentLoaded", () => {
+  fetchList();
+  loginCheck();
+});
+
+
+
 // Listening FOR MESSAGE
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const {action, message, list} = request;
@@ -78,24 +117,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     highlightItem(position);
   } else if (action === "try_copy") {
     navigator.clipboard.writeText(request.text);
-  }
-});
-
-// BUTTON TO CLEAR STORAGE
-const clearButton = document.getElementById("clear-data");
-clearButton.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "clear_data" }, (response) => {
-    if (response.code === "success") {
-      list.innerHTML = "";
-    }
-  });
-});
-
-// COPY TEXT TO CLIPBOARD
-const copyButton = document.getElementById("popup-copy");
-copyButton.addEventListener("click", () => {
-  // console.log("innerText: ",)
-  if (list.innerText) {
-    navigator.clipboard.writeText(list.innerText);
   }
 });

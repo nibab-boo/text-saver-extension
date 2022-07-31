@@ -1,13 +1,53 @@
+const list = document.getElementById("popup-list");
+const newNoteBtn = document.getElementById("new-note");
+const loginBtn = document.getElementById("login");
+const popupBody = document.getElementById("popup-body");
+const noteBody = document.getElementById("note-body");
+
 // LIST FETCHER
 const fetchList = () => {
   // send message
   chrome.runtime.sendMessage({ action: "fetch_list" });
 }
-const list = document.getElementById("popup-list");
 
+// LOGIN CHECK
+const loginCheck = () => {
+  fetch("http://localhost:3000/api/v1/login", {
+    method: "post",
+    headers: {
+        'Content-Type': 'application/json',
+        // 'X-User-Email': formData.get("email"),
+        // 'X-User-Token': formData.get("password"),
+    }
+  }).then(res => {
+    if (res.status != 200) {
+      console.log("Failed Login");
+      return;
+    }
+    newNoteBtn.classList.remove("hidden")
+    login.classList.add("hidden")
+    res.json().then(data => console.log(data));
+
+    console.log("success");
+  });
+}
+
+// ONDOMCONTENTLOADED
 document.addEventListener("DOMContentLoaded", () => {
   fetchList();
+  loginCheck();
 });
+
+newNoteBtn.addEventListener("click", () => {
+  popupBody.classList.add("hidden");
+  noteBody.classList.remove("hidden");
+});
+
+// document.querySelector("#login-form").onsubmit = (e) => {
+//   e.preventDefault();
+//   const formData = new FormData(e.currentTarget);
+  
+// };
 
 // ADDING LINE TO EXTENSION
 const addLine = (message) => {

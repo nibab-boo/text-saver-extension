@@ -84,16 +84,12 @@ const createNote = (title) => {
         body: JSON.stringify({ "note": { "title": title }})
     })
     .then(response => {
-        switch (response.status) {
-            case 200:
-                const data = await response.json()
+        if (response.status === 200) {
+            response.json().then(data => {
+                console.log("DATA", data);
                 chrome.storage.sync.set({ note_id: data.note.id, note_title: data.note.title });
-                chrome.runtime.sendMessage({ action: "create-success", message: data.note.title });
-                break;
-
-            default:
-                console.log("REQUEST CODE:", request.status);
-                break;
+                chrome.runtime.sendMessage({ action: "create_success", title: data.note.title });
+            });
         }
         // if (response.status != 200) {
         //     console.log("CREATE FAILED");

@@ -56,6 +56,17 @@ const highlightItem = (position) => {
   if (position != null) listItems[position].classList.add("highlighted");
 };
 
+const toggleBody = () => {
+  popupBody.classList.toggle("hidden");
+  noteBody.classList.toggle("hidden");
+}
+
+
+// CREATE NOTE SUCCESS
+const createSuccess  = (message) => {
+  document.getElementById("note-title").textContent = `:)${message}`;
+  toggleBody();
+};
 
 
 // EVENT-LISTENERS
@@ -78,11 +89,7 @@ copyButton.addEventListener("click", () => {
 });
 
 // GOTO NOTE-FORM
-newNoteBtn.addEventListener("click", () => {
-  popupBody.classList.add("hidden");
-  noteBody.classList.remove("hidden");
-});
-
+newNoteBtn.addEventListener("click", toggleBody);
 
 // NOTE-FORM ONSUBMIT
 document.querySelector("#note-form").onsubmit = (e) => {
@@ -93,10 +100,7 @@ document.querySelector("#note-form").onsubmit = (e) => {
 };
 
 // BACK TO POPUP
-document.getElementById("back").addEventListener("click", () => {
-  popupBody.classList.remove("hidden");
-  noteBody.classList.add("hidden");
-});
+document.getElementById("back").addEventListener("click", toggleBody);
 
 // ONDOMCONTENTLOADED
 document.addEventListener("DOMContentLoaded", () => {
@@ -119,5 +123,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     highlightItem(position);
   } else if (action === "try_copy") {
     navigator.clipboard.writeText(request.text);
+  } else if (action === "create_success") {
+    console.log("success");
+    createSuccess(request.title);
   }
 });
